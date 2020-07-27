@@ -1,11 +1,10 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Moq;
+﻿using Moq;
+using NUnit.Framework;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using WebEmp.DAL.Model;
 using WebEmp.DAL.Repository;
 using WebEmp.Service;
-using Xunit;
 
 namespace WebEmp.Test
 {
@@ -18,7 +17,7 @@ namespace WebEmp.Test
             _mockEmployeeRepository = new Mock<IEmployeeRepository>();
         }
 
-        [Fact, Trait("Category", "Unit")]
+        [Test]
         public async Task GetEmployeeFromFactoryMustCalculateSalaryAccordingWithEmployeeType()
         {
             //Arrange
@@ -45,7 +44,7 @@ namespace WebEmp.Test
                 };
 
             decimal expectedAnualSalary1 = 11520000;
-            decimal expectedAnualSalary2 = 24000000;
+            decimal expectedAnualSalary2 = 2400000;
 
             //Act
             _mockEmployeeRepository.Setup(c => c.GetEmployees()).ReturnsAsync(() => TestEmployees);

@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using WebEmp.Common.Model;
+﻿using WebEmp.Common.Model;
 using WebEmp.DAL.Model;
 
 namespace WebEmp.Service.EmployeeFactory

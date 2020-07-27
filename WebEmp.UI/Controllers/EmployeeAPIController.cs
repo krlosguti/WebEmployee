@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 using WebEmp.Common.Model;
 using WebEmp.Service;
 
@@ -14,10 +15,12 @@ namespace WebEmp.UI.Controllers
     public class EmployeeAPIController : Controller
     {
         private readonly IEmployeeService _employeeService;
+        private readonly IConfiguration _configuration;
 
-        public EmployeeAPIController(IEmployeeService employeeService)
+        public EmployeeAPIController(IEmployeeService employeeService, IConfiguration iConfig)
         {
             _employeeService = employeeService;
+            _configuration = iConfig;
         }
 
         // GET: api/<EmployeeAPIController>
