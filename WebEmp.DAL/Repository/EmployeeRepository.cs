@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
@@ -12,14 +13,15 @@ namespace WebEmp.DAL.Repository
 {
     public class EmployeeRepository:IEmployeeRepository
     {
-        private readonly string BaseAddress = "http://masglobaltestapi.azurewebsites.net/";
-        static HttpClient client = new HttpClient();
+        private readonly string apiBaseAddress = "http://masglobaltestapi.azurewebsites.net/";
+        //readonly string apiBaseAddress = Configuration.GetValue<string>("WebAPIBaseUrl");
+            static HttpClient client = new HttpClient();
         public async Task<List<EmployeeDTO>> GetEmployees()
         {
             List<EmployeeDTO> employees = new List<EmployeeDTO>();
             using (var client = new HttpClient())
             {
-                client.BaseAddress = new Uri(BaseAddress);
+                client.BaseAddress = new Uri(apiBaseAddress);
                 client.DefaultRequestHeaders.Clear();
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
                 HttpResponseMessage response = await client.GetAsync("api/Employees/");

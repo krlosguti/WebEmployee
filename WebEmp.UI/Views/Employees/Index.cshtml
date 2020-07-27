@@ -2,10 +2,10 @@
     ViewData["Title"] = "Index";
 }
 
-<h2><i class="glyphicon glyphicon-user"></i> Get Employees</h2>
+<h2><i class="glyphicon glyphicon-user"></i> Get Employee(s)</h2>
 
 <div class="panel panel-primary">
-    <div class="panel-heading">Employees:</div>
+    <div class="panel-heading">enter an ID to consult an employee otherwise leave it empty</div>
     <div class="panel-body">
         @Html.AntiForgeryToken()
         <div class="form-horizontal">
@@ -24,7 +24,7 @@
 
     </div>
 </div>
-<table id="tblEmployees" name="tblEmployees" class="table table-striped table-hover table-responsive">
+<table id="tblEmployees" name="tblEmployees" class="table table-striped table-hover table-responsive table-condensed">
     <thead>
         <tr>
             <th>Id</th>
@@ -33,14 +33,26 @@
             <th>Role Id</th>
             <th>Role Name</th>
             <th>Role Description</th>
+            <th>Value Monthly/Hourly</th>
             <th>Year Salary</th>
         </tr>
     </thead>
     <tbody id="employees"></tbody>
 </table>
 <script type="text/javascript">
+
+    function formatCurrencyCO(value)
+    {
+        return new Intl.NumberFormat("es-CO",
+            {
+                style: "currency",
+                currency: "COP",
+                minimumFractionDigits: 0
+            }).format(value);
+    }
+
     function GetEmployees() {
-        var id = $("#EmployeeID").val();
+        var id = $("#EmployeeID").val().trim();
         console.log("El id obtenido es: " + id);
         var service = "";
         if (id === "") {
@@ -54,14 +66,19 @@
             contentType: "application/json; charset=utf-8",
             dataType: "json",
             success: function (data) {
+                
                 if (data) {
-                    debugger;
+                    var value;
                     var row = "";
                     if (!id) {
                         $.each(data,
                             function (index, item) {
+                                if (item.contractTypeName == "HourlySalaryEmployee")
+                                    value = "value x hour " + formatCurrencyCO(item.value);
+                                else
+                                    value = "value x month " + formatCurrencyCO(item.value);
                                 row += "<tr><td>" +
-                                    item.Id +
+                                    item.id +
                                     "</td><td>" +
                                     item.name +
                                     "</td><td>" +
@@ -72,14 +89,20 @@
                                     item.roleName +
                                     "</td><td>" +
                                     item.roleDescription +
-                                    "</td><td>" +
-                                    item.yearSalary +
+                                    "</td><td  style='text-align: right'>" +
+                                    value+
+                                    "</td><td  style='text-align: right'>" +
+                                    formatCurrencyCO(item.yearSalary)+
                                     "</td></tr>";
                             });
                     }
                     else {
+                        if (data.contractTypeName == "HourlySalaryEmployee")
+                            value = "value x hour " + formatCurrencyCO(data.value);
+                        else
+                            value = "value x month " + formatCurrencyCO(data.value);
                         row += "<tr><td>" +
-                            data.Id +
+                            data.id +
                             "</td><td>" +
                             data.name +
                             "</td><td>" +
@@ -90,8 +113,10 @@
                             data.roleName +
                             "</td><td>" +
                             data.roleDescription +
-                            "</td><td>" +
-                            data.yearSalary +
+                            "</td><td  style='text-align: right'>" +
+                            value +
+                            "</td><td  style='text-align: right'>" +
+                            formatCurrencyCO(data.yearSalary) +
                             "</td></tr>";
 
                     }

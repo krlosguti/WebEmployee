@@ -9,5 +9,6 @@
         public string roleName { get; set; }
         public string roleDescription { get; set; }
         public virtual long yearSalary { get; }
+        public virtual long value { get; }
     }
 }
